@@ -1,5 +1,5 @@
 class Location < ActiveRecord::Base
-  belongs_to :parent_location, class_name: 'Location', foreign_key: 'location_id', optional: true
+  belongs_to :parent_location, class_name: "Location", foreign_key: "location_id", optional: true
 
   LOCATION_TYPES = {
     region: 0,
@@ -8,11 +8,11 @@ class Location < ActiveRecord::Base
     street: 3,
     address: 4
   }
-  
+
   enum :location_type, LOCATION_TYPES
 
   # Метод который на вход принимает экземпляр класса Location и возвращает на выходе массив экземпляров класса Location.
-  # Содержащий рекурсивно всех родителей location, включая сам location. 
+  # Содержащий рекурсивно всех родителей location, включая сам location.
   #
   # @param location [Location] instance of class Location
   # @return [Array<Location>] array of locations starting from root parent to the given location
@@ -40,7 +40,7 @@ class Location < ActiveRecord::Base
       # Проверяем связь родитель-потомок
       a_parents = parent_locations(a)
       b_parents = parent_locations(b)
-      
+
       if a_parents.include?(b)
         -1
       elsif b_parents.include?(a)
@@ -48,7 +48,7 @@ class Location < ActiveRecord::Base
       else
         # Если нет связи родитель-потомок, сравниваем по типу
         type_comparison = LOCATION_TYPES[a.location_type.to_sym] <=> LOCATION_TYPES[b.location_type.to_sym]
-        
+
         if type_comparison != 0
           type_comparison
         else
